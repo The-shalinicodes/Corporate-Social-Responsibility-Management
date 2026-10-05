@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Percentage of a category budget consumed (spent + committed) at which a budget utilisation alert is raised to CSR Finance and the CSR Head. Valid values 0-100.</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_2248447_csr_ma_2.budget_alert_percent</name>
+        <read_roles>admin,x_2248447_csr_ma_2.csr_admin,x_2248447_csr_ma_2.csr_finance,x_2248447_csr_ma_2.csr_head</read_roles>
+        <suffix>budget_alert_percent</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:08:00</sys_created_on>
+        <sys_id>7725e2a193f74c9d8c5f4634444134ce</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2.budget_alert_percent</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_properties_7725e2a193f74c9d8c5f4634444134ce</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:08:00</sys_updated_on>
+        <type>integer</type>
+        <value>80</value>
+        <write_roles>admin,x_2248447_csr_ma_2.csr_admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=7725e2a193f74c9d8c5f4634444134ce"/>
+</record_update>

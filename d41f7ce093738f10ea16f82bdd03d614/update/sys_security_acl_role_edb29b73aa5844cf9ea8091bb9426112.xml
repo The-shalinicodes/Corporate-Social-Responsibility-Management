@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role">
+    <sys_security_acl_role action="INSERT_OR_UPDATE">
+        <sys_class_name>sys_security_acl_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:13:19</sys_created_on>
+        <sys_id>edb29b73aa5844cf9ea8091bb9426112</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2_event.x_2248447_csr_ma_2.csr_compliance</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_security_acl display_value="x_2248447_csr_ma_2_event">ba98589af2b14bd5822824c3e204af47</sys_security_acl>
+        <sys_update_name>sys_security_acl_role_edb29b73aa5844cf9ea8091bb9426112</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:13:19</sys_updated_on>
+        <sys_user_role display_value="x_2248447_csr_ma_2.csr_compliance" name="x_2248447_csr_ma_2.csr_compliance">f3280336866d43ebb771281ad8f41a69</sys_user_role>
+    </sys_security_acl_role>
+</record_update>

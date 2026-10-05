@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="dfa6dd2c93f38f10ea16f82bdd03d6f7" label="Event Closure" max_length="40" name="x_2248447_csr_ma_2_event_close" type="collection">
+        <element label="Attendance cleared" max_length="40" name="attendance_cleared" type="boolean"/>
+        <element label="Impact cleared" max_length="40" name="impact_cleared" type="boolean"/>
+        <element label="Closed by" max_length="32" name="closed_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Pending items" max_length="4000" name="pending_items" type="multi_two_lines"/>
+        <element display="true" label="Event" mandatory="true" max_length="32" name="event" reference="x_2248447_csr_ma_2_event" reference_cascade_rule="cascade" type="reference"/>
+        <element label="Expenses cleared" max_length="40" name="expenses_cleared" type="boolean"/>
+        <element choice="3" default="pending" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Ready" sequence="2" value="ready"/>
+                <element inactive_on_update="false" label="Pending" sequence="1" value="pending"/>
+                <element inactive_on_update="false" label="Rejected" sequence="4" value="rejected"/>
+                <element inactive_on_update="false" label="Approved" sequence="3" value="approved"/>
+            </choice>
+        </element>
+        <element label="Closed on" max_length="40" name="closed_on" type="glide_date_time"/>
+        <index name="index">
+            <element name="closed_by"/>
+        </index>
+        <index name="index2" unique="true">
+            <element name="event"/>
+        </index>
+    </element>
+</database>

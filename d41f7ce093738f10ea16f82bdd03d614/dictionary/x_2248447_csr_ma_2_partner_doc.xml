@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="cc46112c93f38f10ea16f82bdd03d6bd" label="Partner Document" max_length="40" name="x_2248447_csr_ma_2_partner_doc" type="collection">
+        <element label="Verified by" max_length="32" name="verified_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element choice="3" label="Document type" mandatory="true" max_length="40" name="document_type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="FCRA Certificate" sequence="5" value="fcra"/>
+                <element inactive_on_update="false" label="80G Certificate" sequence="4" value="80g"/>
+                <element inactive_on_update="false" label="Registration Certificate" sequence="1" value="registration_certificate"/>
+                <element inactive_on_update="false" label="Other" sequence="7" value="other"/>
+                <element inactive_on_update="false" label="PAN Card" sequence="2" value="pan_card"/>
+                <element inactive_on_update="false" label="Audited Financials" sequence="6" value="audited_financials"/>
+                <element inactive_on_update="false" label="12A Certificate" sequence="3" value="12a"/>
+            </choice>
+        </element>
+        <element hint="expiry_date + x_2248447_csr_ma_2.document_grace_period_days." label="Grace period end" max_length="40" name="grace_period_end" type="glide_date"/>
+        <element label="Expiry date" max_length="40" name="expiry_date" type="glide_date"/>
+        <element choice="3" default="pending_verification" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Rejected" sequence="4" value="rejected"/>
+                <element inactive_on_update="false" label="Expiring" sequence="2" value="expiring"/>
+                <element inactive_on_update="false" label="Expired" sequence="3" value="expired"/>
+                <element inactive_on_update="false" label="Valid" sequence="1" value="valid"/>
+                <element inactive_on_update="false" label="Pending Verification" sequence="5" value="pending_verification"/>
+            </choice>
+        </element>
+        <element label="Partner" mandatory="true" max_length="32" name="partner" reference="x_2248447_csr_ma_2_partner" reference_cascade_rule="cascade" type="reference"/>
+        <element display="true" label="Document number" max_length="60" name="document_number" type="string"/>
+        <element label="Verified on" max_length="40" name="verified_on" type="glide_date_time"/>
+        <element label="Issue date" max_length="40" name="issue_date" type="glide_date"/>
+        <index name="index">
+            <element name="partner"/>
+        </index>
+        <index name="index2">
+            <element name="verified_by"/>
+        </index>
+    </element>
+</database>

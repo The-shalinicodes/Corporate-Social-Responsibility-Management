@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="2e965d2c93f38f10ea16f82bdd03d66b" extends="task" label="Corrective Action" max_length="40" name="x_2248447_csr_ma_2_corr_action" type="collection">
+        <element label="Target date" max_length="40" name="target_date" type="glide_date"/>
+        <element choice="3" default="open" label="Action status" max_length="40" name="action_status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Completed" sequence="3" value="completed"/>
+                <element inactive_on_update="false" label="Cancelled" sequence="4" value="cancelled"/>
+                <element inactive_on_update="false" label="In Progress" sequence="2" value="in_progress"/>
+                <element inactive_on_update="false" label="Open" sequence="1" value="open"/>
+            </choice>
+        </element>
+        <element label="Outcome notes" max_length="4000" name="outcome_notes" type="multi_two_lines"/>
+        <element label="Action owner" max_length="32" name="action_owner" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="KPI result" max_length="32" name="kpi_result" reference="x_2248447_csr_ma_2_kpi_result" reference_cascade_rule="cascade" type="reference"/>
+    </element>
+</database>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[/**
+ * CSR KPI Calculation Engine
+ *
+ * Calculates the six core KPIs defined in the CSR workflow:
+ * 1. CSR Volunteer Hours vs Target
+ * 2. Employee Participation Rate
+ * 3. NGO Engagement
+ * 4. Beneficiaries Impacted
+ * 5. CSR Spend vs Budget
+ * 6. Program Completion Rate
+ *
+ * Each KPI is assigned a RAG status (green/orange/red) based on
+ * configurable thresholds stored in the kpi_thresh table.
+ */
+import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide';
+const TABLE = {
+    PLAN: 'x_2248447_csr_ma_2_plan',
+    BUDGET: 'x_2248447_csr_ma_2_budget',
+    PARTNER: 'x_2248447_csr_ma_2_partner',
+    PROGRAM: 'x_2248447_csr_ma_2_program',
+    EVENT: 'x_2248447_csr_ma_2_event',
+    ATTENDANCE: 'x_2248447_csr_ma_2_attendance',
+    EVENT_REG: 'x_2248447_csr_ma_2_event_reg',
+    IMPACT: 'x_2248447_csr_ma_2_impact',
+    KPI_RESULT: 'x_2248447_csr_ma_2_kpi_result',
+    KPI_THRESH: 'x_2248447_csr_ma_2_kpi_thresh',
+};
+/**
+ * Load KPI thresholds from the kpi_thresh table.
+ */
+function loadThresholds() {
+    var map = {};
+    var gr = new GlideRecord(TABLE.KPI_THRESH);
+    gr.addQuery('active', true);
+    gr.query();
+    while (gr.next()) {
+        var kpi = gr.getValue('kpi');
+        map[kpi] = {
+            greenMin: parseFloat(gr.getValue('green_min')) || 90,
+            orangeMin: parseFloat(gr.getValue('orange_min')) || 70,
+            inverted: gr.getValue('inverted') === 'true',
+        };
+    }
+    return map;
+}
+/**
+ * Determine RAG status for a KPI based on its achievement % and threshold.
+ */
+function getStatus(percent, threshold) {
+    if (threshold.inverted) {
+        // For Spend vs Budget: lower is better
+        // Green if below orangeMin (which is set as the lower bound, e.g. 80)
+        // Orange if between orangeMin and greenMin (e.g. 80-100)
+        // Red if above greenMin (e.g. above 100)
+        if (percent < threshold.greenMin)
+            return 'green';
+        if (percent <= threshold.orangeMin)
+            return 'orange';
+        return 'red';
+    }
+    else {
+        // Standard: higher is better
+        if (percent >= threshold.greenMin)
+            return 'green';
+        if (percent >= threshold.orangeMin)
+            return 'orange';
+        return 'red';
+    }
+}
+/**
+ * Upsert a KPI result record.
+ */
+function upsertKpiResult(kpi, planId, period, actual, target, percent, status) {
+    var gr = new GlideRecord(TABLE.KPI_RESULT);
+    gr.addQuery('kpi', kpi);
+    gr.addQuery('plan', planId);
+    gr.addQuery('period', period);
+    gr.query();
+    if (gr.next()) {
+        gr.setValue('actual_value', actual);
+        gr.setValue('target_value', target);
+        gr.setValue('achievement_percent', Math.round(percent * 100) / 100);
+        gr.setValue('status', status);
+        gr.setValue('calculated_on', new GlideDateTime().getValue());
+        gr.update();
+    }
+    else {
+        gr.initialize();
+        gr.setValue('kpi', kpi);
+        gr.setValue('plan', planId);
+        gr.setValue('period', period);
+        gr.setValue('actual_value', actual);
+        gr.setValue('target_value', target);
+        gr.setValue('achievement_percent', Math.round(percent * 100) / 100);
+        gr.setValue('status', status);
+        gr.setValue('calculated_on', new GlideDateTime().getValue());
+        gr.insert();
+    }
+}
+/**
+ * Calculate all 6 KPIs for the active plan.
+ * Called by the scheduled script on a monthly basis.
+ */
+export function calculateAllKPIs() {
+    // Find the active plan
+    var plan = new GlideRecord(TABLE.PLAN);
+    plan.addQuery('status', 'active');
+    plan.setLimit(1);
+    plan.query();
+    if (!plan.next()) {
+        gs.info('CSR KPI Engine: No active plan found. Skipping KPI calculation.');
+        return;
+    }
+    var planId = plan.getUniqueValue();
+    var fiscalYear = plan.getValue('fiscal_year') || '';
+    var now = new GlideDateTime();
+    var period = now.getYearUTC() + '-' + ('0' + (now.getMonthUTC())).slice(-2);
+    var thresholds = loadThresholds();
+    gs.info('CSR KPI Engine: Calculating KPIs for plan ' + fiscalYear + ', period ' + period);
+    // ─── KPI 1: Actual CSR Hours vs Target ───
+    var targetHours = parseFloat(plan.getValue('target_volunteer_hours')) || 0;
+    var actualHours = 0;
+    var attGr = new GlideRecord(TABLE.ATTENDANCE);
+    attGr.addQuery('status', 'completed');
+    attGr.addQuery('event.event_date', '>=', fiscalYear.substring(0, 4) + '-01-01');
+    attGr.addQuery('event.event_date', '<=', fiscalYear.substring(0, 4) + '-12-31');
+    attGr.query();
+    while (attGr.next()) {
+        actualHours += parseFloat(attGr.getValue('credited_hours')) || 0;
+    }
+    var hoursPercent = targetHours > 0 ? (actualHours / targetHours) * 100 : 0;
+    var hoursThresh = thresholds['csr_hours'] || { greenMin: 90, orangeMin: 70, inverted: false };
+    upsertKpiResult('csr_hours', planId, period, actualHours, targetHours, hoursPercent, getStatus(hoursPercent, hoursThresh));
+    // ─── KPI 2: Employee Participation ───
+    var targetEmployees = parseFloat(plan.getValue('target_employees')) || 0;
+    var employeeSet = {};
+    var empGr = new GlideRecord(TABLE.EVENT_REG);
+    empGr.addQuery('state', 'IN', 'confirmed,attended');
+    empGr.addQuery('event.event_date', '>=', fiscalYear.substring(0, 4) + '-01-01');
+    empGr.addQuery('event.event_date', '<=', fiscalYear.substring(0, 4) + '-12-31');
+    empGr.query();
+    while (empGr.next()) {
+        var empId = empGr.getValue('employee');
+        if (empId)
+            employeeSet[empId] = true;
+    }
+    var uniqueEmployees = Object.keys(employeeSet).length;
+    var empPercent = targetEmployees > 0 ? (uniqueEmployees / targetEmployees) * 100 : 0;
+    var empThresh = thresholds['employee_participation'] || { greenMin: 90, orangeMin: 70, inverted: false };
+    upsertKpiResult('employee_participation', planId, period, uniqueEmployees, targetEmployees, empPercent, getStatus(empPercent, empThresh));
+    // ─── KPI 3: NGO Engagement ───
+    var targetNGOs = parseFloat(plan.getValue('target_ngos')) || 0;
+    var activeNGOs = 0;
+    var ngoGr = new GlideRecord(TABLE.PARTNER);
+    ngoGr.addQuery('status', 'active');
+    ngoGr.query();
+    while (ngoGr.next()) {
+        var pid = ngoGr.getUniqueValue();
+        var prog = new GlideRecord(TABLE.PROGRAM);
+        prog.addQuery('partner', pid);
+        prog.addQuery('status', 'completed');
+        prog.addQuery('plan', planId);
+        prog.setLimit(1);
+        prog.query();
+        if (prog.next()) {
+            activeNGOs++;
+        }
+    }
+    var ngoPercent = targetNGOs > 0 ? (activeNGOs / targetNGOs) * 100 : 0;
+    var ngoThresh = thresholds['ngo_engagement'] || { greenMin: 90, orangeMin: 70, inverted: false };
+    upsertKpiResult('ngo_engagement', planId, period, activeNGOs, targetNGOs, ngoPercent, getStatus(ngoPercent, ngoThresh));
+    // ─── KPI 4: Beneficiaries Impacted ───
+    var targetBeneficiaries = parseFloat(plan.getValue('target_beneficiaries')) || 0;
+    var verifiedBeneficiaries = 0;
+    var benGr = new GlideRecord(TABLE.IMPACT);
+    benGr.addQuery('status', 'verified');
+    benGr.addQuery('program.plan', planId);
+    benGr.query();
+    while (benGr.next()) {
+        verifiedBeneficiaries += parseFloat(benGr.getValue('beneficiaries_verified')) || 0;
+    }
+    var benPercent = targetBeneficiaries > 0 ? (verifiedBeneficiaries / targetBeneficiaries) * 100 : 0;
+    var benThresh = thresholds['beneficiaries'] || { greenMin: 90, orangeMin: 70, inverted: false };
+    upsertKpiResult('beneficiaries', planId, period, verifiedBeneficiaries, targetBeneficiaries, benPercent, getStatus(benPercent, benThresh));
+    // ─── KPI 5: CSR Spend vs Budget ───
+    var totalApproved = 0;
+    var totalSpent = 0;
+    var budgetGr = new GlideRecord(TABLE.BUDGET);
+    budgetGr.addQuery('plan', planId);
+    budgetGr.query();
+    while (budgetGr.next()) {
+        totalApproved += parseFloat(budgetGr.getValue('approved')) || 0;
+        totalSpent += parseFloat(budgetGr.getValue('spent')) || 0;
+    }
+    var spendPercent = totalApproved > 0 ? (totalSpent / totalApproved) * 100 : 0;
+    var spendThresh = thresholds['spend_vs_budget'] || { greenMin: 80, orangeMin: 100, inverted: true };
+    upsertKpiResult('spend_vs_budget', planId, period, totalSpent, totalApproved, spendPercent, getStatus(spendPercent, spendThresh));
+    // ─── KPI 6: Program Completion ───
+    var totalPrograms = 0;
+    var completedPrograms = 0;
+    var progGr = new GlideRecord(TABLE.PROGRAM);
+    progGr.addQuery('plan', planId);
+    progGr.addQuery('status', 'IN', 'approved,active,completed,closed');
+    progGr.query();
+    while (progGr.next()) {
+        totalPrograms++;
+        var progStatus = progGr.getValue('status');
+        if (progStatus === 'completed' || progStatus === 'closed') {
+            completedPrograms++;
+        }
+    }
+    var compPercent = totalPrograms > 0 ? (completedPrograms / totalPrograms) * 100 : 0;
+    var compThresh = thresholds['program_completion'] || { greenMin: 90, orangeMin: 70, inverted: false };
+    upsertKpiResult('program_completion', planId, period, completedPrograms, totalPrograms, compPercent, getStatus(compPercent, compThresh));
+    gs.info('CSR KPI Engine: All 6 KPIs calculated successfully for period ' + period);
+}
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/engines/kpi-engine.ts</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:36</sys_created_on>
+        <sys_id>161e1716e6174161a10cf2ea4e3de944</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/engines/kpi-engine.ts</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_161e1716e6174161a10cf2ea4e3de944</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:36</sys_updated_on>
+    </sys_module>
+</record_update>

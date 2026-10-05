@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="47a51da893f38f10ea16f82bdd03d6bf" label="Participation Streak" max_length="40" name="x_2248447_csr_ma_2_streak" type="collection">
+        <element default="0" label="Longest streak (months)" max_length="40" name="longest_streak" type="integer"/>
+        <element default="0" label="Current streak (months)" max_length="40" name="current_streak" type="integer"/>
+        <element label="Updated on" max_length="40" name="updated_on" type="glide_date_time"/>
+        <element label="Fiscal year" max_length="20" name="fiscal_year" type="string"/>
+        <element display="true" label="Employee" mandatory="true" max_length="32" name="employee" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element hint="Stored as YYYY-MM." label="Last participation month" max_length="10" name="last_participation_month" type="string"/>
+        <index name="index">
+            <element name="employee"/>
+        </index>
+        <index name="index2" unique="true">
+            <element name="employee"/>
+            <element name="fiscal_year"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[(function () {
+    /**
+     * CSR Impact Report Overdue Monitor
+     * Runs daily to detect impact reports past their due date.
+     * Sets overdue_flag = true and changes status to 'overdue'.
+     */
+    try {
+        var today = new GlideDateTime();
+        var todayStr = today.getLocalDate().getValue();
+        var overdueCount = 0;
+
+        var gr = new GlideRecord('x_2248447_csr_ma_2_impact');
+        gr.addQuery('due_date', '<', todayStr);
+        gr.addQuery('status', 'IN', 'pending,submitted');
+        gr.addQuery('overdue_flag', false);
+        gr.query();
+
+        while (gr.next()) {
+            gr.setValue('overdue_flag', true);
+            gr.setValue('status', 'overdue');
+            gr.update();
+            overdueCount++;
+
+            gs.info('CSR Impact Overdue: Impact report for event ' +
+                gr.getDisplayValue('event') + ' (partner: ' +
+                gr.getDisplayValue('partner') + ') is overdue. Due date was: ' +
+                gr.getValue('due_date'));
+        }
+
+        gs.info('CSR Impact Overdue Monitor: Flagged ' + overdueCount + ' overdue impact reports.');
+    } catch (e) {
+        gs.error('CSR Impact Overdue Monitor failed: ' + e.message);
+    }
+})();
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/scheduled/impact-overdue-monitor.server.js</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:46</sys_created_on>
+        <sys_id>d8247c5badbe4ea2b4e79b8c8cc1d4be</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/scheduled/impact-overdue-monitor.server.js</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_d8247c5badbe4ea2b4e79b8c8cc1d4be</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:46</sys_updated_on>
+    </sys_module>
+</record_update>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "serialNumber": "urn:uuid:38636148-fd0a-4026-9229-b2ae8fb8f666",
+  "metadata": {
+    "timestamp": "2026-10-04T19:23:32.921Z",
+    "tools": {
+      "components": [
+        {
+          "type": "library",
+          "name": "sdk-build-plugins",
+          "group": "@servicenow",
+          "version": "4.13.3",
+          "author": "ServiceNow"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "name": "x-2248447-csr-management",
+      "version": "1.0.0",
+      "bom-ref": "pkg:servicenow/x-2248447-csr-management@1.0.0?sys_scope_id=d41f7ce093738f10ea16f82bdd03d614",
+      "description": "[BUILD AGENT GENERATED]:  Centralized Corporate Social Responsibility governance platform. Manages the full CSR lifecycle: annual CSR planning and category budgets, NGO partner onboarding with compliance verification and risk scoring, partner document maintenance, CSR program and volunteering event creation with budget commitment, employee registration with waitlists and VTO approval, attendance and volunteer hour tracking with recognition badges and certificates, NGO impact submission and evidence verification, expense reconciliation and KPI calculation, and role-based dashboards with closure checklists and audit archiving.",
+      "licenses": [
+        {
+          "license": {
+            "name": "UNLICENSED"
+          }
+        }
+      ],
+      "purl": "pkg:servicenow/x-2248447-csr-management@1.0.0?sys_scope_id=d41f7ce093738f10ea16f82bdd03d614"
+    }
+  },
+  "components": [],
+  "dependencies": [
+    {
+      "ref": "pkg:servicenow/x-2248447-csr-management@1.0.0?sys_scope_id=d41f7ce093738f10ea16f82bdd03d614"
+    }
+  ]
+}]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/bom.json</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:38</sys_created_on>
+        <sys_id>37ca74411cad42f1ae7c25eb629bc768</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/bom.json</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_37ca74411cad42f1ae7c25eb629bc768</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:38</sys_updated_on>
+    </sys_module>
+</record_update>

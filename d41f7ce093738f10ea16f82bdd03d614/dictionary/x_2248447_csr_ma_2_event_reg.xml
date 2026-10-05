@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="8476d52c93f38f10ea16f82bdd03d6aa" label="Event Registration" max_length="40" name="x_2248447_csr_ma_2_event_reg" type="collection">
+        <element hint="FIFO position; 1 is promoted first when a confirmed seat is released." label="Waitlist position" max_length="40" name="waitlist_position" type="integer"/>
+        <element display="true" label="Employee" mandatory="true" max_length="32" name="employee" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Event" mandatory="true" max_length="32" name="event" reference="x_2248447_csr_ma_2_event" reference_cascade_rule="cascade" type="reference"/>
+        <element label="VTO requested" max_length="40" name="vto_requested" type="boolean"/>
+        <element label="VTO approver" max_length="32" name="vto_approver" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Cancelled on" max_length="40" name="cancelled_on" type="glide_date_time"/>
+        <element choice="3" default="confirmed" label="State" max_length="40" name="state" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Waitlisted" sequence="2" value="waitlisted"/>
+                <element inactive_on_update="false" label="Cancelled" sequence="3" value="cancelled"/>
+                <element inactive_on_update="false" label="Confirmed" sequence="1" value="confirmed"/>
+                <element inactive_on_update="false" label="Late Cancelled" sequence="6" value="late_cancelled"/>
+                <element inactive_on_update="false" label="No Show" sequence="5" value="no_show"/>
+                <element inactive_on_update="false" label="Attended" sequence="4" value="attended"/>
+            </choice>
+        </element>
+        <element choice="3" default="not_required" label="VTO status" max_length="40" name="vto_status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Pending" sequence="2" value="pending"/>
+                <element inactive_on_update="false" label="Rejected" sequence="4" value="rejected"/>
+                <element inactive_on_update="false" label="Not Required" sequence="1" value="not_required"/>
+                <element inactive_on_update="false" label="Approved" sequence="3" value="approved"/>
+            </choice>
+        </element>
+        <element hint="Drives FIFO waitlist ordering." label="Registered on" max_length="40" name="registered_on" type="glide_date_time"/>
+        <index name="index">
+            <element name="employee"/>
+        </index>
+        <index name="index2">
+            <element name="event"/>
+        </index>
+        <index name="index3" unique="true">
+            <element name="event"/>
+            <element name="employee"/>
+        </index>
+        <index name="index4">
+            <element name="vto_approver"/>
+        </index>
+    </element>
+</database>

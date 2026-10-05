@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl">
+    <sys_security_acl action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <admin_overrides>true</admin_overrides>
+        <advanced>true</advanced>
+        <applies_to/>
+        <condition/>
+        <controlled_by_refs/>
+        <decision_type>allow</decision_type>
+        <description>Registration write — coordinator, admin (full) + employee (own, for cancellation)</description>
+        <local_or_existing>Existing</local_or_existing>
+        <name>x_2248447_csr_ma_2_event_reg</name>
+        <operation display_value="write">write</operation>
+        <script><![CDATA[
+    if (gs.hasRole('x_2248447_csr_ma_2.csr_coordinator')
+        || gs.hasRole('x_2248447_csr_ma_2.csr_admin')) {
+        answer = true;
+    } else {
+        answer = (current.employee == gs.getUserID());
+    }
+]]></script>
+        <security_attribute/>
+        <sys_class_name>sys_security_acl</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:08:41</sys_created_on>
+        <sys_id>110419c0fb0d4cf88884bee43cd1dbcc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2_event_reg</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_security_acl_110419c0fb0d4cf88884bee43cd1dbcc</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:08:41</sys_updated_on>
+        <type display_value="record">record</type>
+    </sys_security_acl>
+</record_update>

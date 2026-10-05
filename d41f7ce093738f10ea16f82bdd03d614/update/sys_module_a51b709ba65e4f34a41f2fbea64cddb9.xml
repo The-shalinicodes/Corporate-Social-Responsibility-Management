@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[import { gs, GlideRecord } from '@servicenow/glide';
+export function reconcileExpenseToBudget(current, previous) {
+    var newStatus = current.getValue('status');
+    var oldStatus = previous.getValue('status');
+    if (newStatus !== 'recorded' || oldStatus === 'recorded')
+        return;
+    var budgetId = current.getValue('budget');
+    var amount = parseFloat(current.getValue('amount')) || 0;
+    if (!budgetId || amount <= 0)
+        return;
+    var budget = new GlideRecord('x_2248447_csr_ma_2_budget');
+    if (budget.get(budgetId)) {
+        var spent = parseFloat(budget.getValue('spent')) || 0;
+        var committed = parseFloat(budget.getValue('committed')) || 0;
+        var approved = parseFloat(budget.getValue('approved')) || 0;
+        // Move from committed to spent
+        var commitReduction = Math.min(amount, committed);
+        budget.setValue('spent', spent + amount);
+        budget.setValue('committed', committed - commitReduction);
+        // available recalculated by budget BR
+        budget.setValue('available', approved - (spent + amount) - (committed - commitReduction));
+        budget.update();
+        // Check budget alert threshold
+        var alertPercent = parseInt(gs.getProperty('x_2248447_csr_ma_2.budget_alert_percent')) || 80;
+        var utilization = ((spent + amount) / approved) * 100;
+        if (utilization >= alertPercent) {
+            gs.addInfoMessage('BUDGET ALERT: Category budget utilization is now at ' + Math.round(utilization) + '% (threshold: ' + alertPercent + '%).');
+        }
+    }
+}
+export function budgetHardStop(current, previous) {
+    var budgetId = current.getValue('budget');
+    var amount = parseFloat(current.getValue('amount')) || 0;
+    if (!budgetId || amount <= 0)
+        return;
+    var budget = new GlideRecord('x_2248447_csr_ma_2_budget');
+    if (budget.get(budgetId)) {
+        var spent = parseFloat(budget.getValue('spent')) || 0;
+        var approved = parseFloat(budget.getValue('approved')) || 0;
+        if ((spent + amount) > approved) {
+            gs.addErrorMessage('BUDGET HARD STOP: Recording this expense of ' + amount + ' would exceed the approved budget of ' + approved + ' (current spent: ' + spent + '). Please raise a budget exception.');
+            current.setAbortAction(true);
+        }
+    }
+}
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/finance-reconciliation.ts</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:44</sys_created_on>
+        <sys_id>a51b709ba65e4f34a41f2fbea64cddb9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/finance-reconciliation.ts</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_a51b709ba65e4f34a41f2fbea64cddb9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:44</sys_updated_on>
+    </sys_module>
+</record_update>

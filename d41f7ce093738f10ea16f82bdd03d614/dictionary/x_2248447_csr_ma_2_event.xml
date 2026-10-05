@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="ac961d2c93f38f10ea16f82bdd03d674" extends="task" label="CSR Event" max_length="40" name="x_2248447_csr_ma_2_event" type="collection">
+        <element label="Published" max_length="40" name="published" type="boolean"/>
+        <element label="End time" max_length="40" name="end_time" type="glide_time"/>
+        <element label="Event date" max_length="40" name="event_date" type="glide_date"/>
+        <element label="Venue" max_length="255" name="venue" type="string"/>
+        <element default="0" hint="Seats available = capacity - confirmed_count." label="Confirmed registrations" max_length="40" name="confirmed_count" type="integer"/>
+        <element label="Program" mandatory="true" max_length="32" name="program" reference="x_2248447_csr_ma_2_program" reference_cascade_rule="restrict" type="reference"/>
+        <element label="Start time" max_length="40" name="start_time" type="glide_time"/>
+        <element default="0" label="Waitlisted registrations" max_length="40" name="waitlist_count" type="integer"/>
+        <element attributes="scale=2" hint="Caps creditable volunteer hours: min(check_out - check_in, scheduled_hours)." label="Scheduled hours" max_length="20" name="scheduled_hours" type="decimal"/>
+        <element hint="Token encoded in the event QR code used for self check-in." label="QR token" max_length="64" name="qr_token" type="string"/>
+        <element attributes="scale=2" label="Budget allocated" max_length="20" name="budget_allocated" type="decimal"/>
+        <element choice="3" default="draft" label="Event status" max_length="40" name="event_status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Cancelled" sequence="5" value="cancelled"/>
+                <element inactive_on_update="false" label="In Progress" sequence="3" value="in_progress"/>
+                <element inactive_on_update="false" label="Completed" sequence="4" value="completed"/>
+                <element inactive_on_update="false" label="Rescheduled" sequence="6" value="rescheduled"/>
+                <element inactive_on_update="false" label="Closed" sequence="7" value="closed"/>
+                <element inactive_on_update="false" label="Draft" sequence="1" value="draft"/>
+                <element inactive_on_update="false" label="Published" sequence="2" value="published"/>
+            </choice>
+        </element>
+        <element label="VTO available" max_length="40" name="vto_available" type="boolean"/>
+        <element default="0" label="Capacity" max_length="40" name="capacity" type="integer"/>
+    </element>
+</database>

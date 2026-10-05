@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_package_dependency_m2m">
+    <sys_package_dependency_m2m action="INSERT_OR_UPDATE">
+        <dependency display_value="Task table schema" source="com.glide.task">d521b6f78c5103100a22deb6dd2b4e5d</dependency>
+        <min_version>1.0.0</min_version>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 18:45:42</sys_created_on>
+        <sys_id>0137d1ac93f38f10ea16f82bdd03d6bb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 18:45:42</sys_updated_on>
+    </sys_package_dependency_m2m>
+</record_update>

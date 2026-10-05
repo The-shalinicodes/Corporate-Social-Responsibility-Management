@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="bf0699e893f38f10ea16f82bdd03d64c" label="KPI Threshold" max_length="40" name="x_2248447_csr_ma_2_kpi_thresh" type="collection">
+        <element choice="3" display="true" label="KPI" mandatory="true" max_length="40" name="kpi" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="NGO Engagement" sequence="3" value="ngo_engagement"/>
+                <element inactive_on_update="false" label="Spend vs Budget" sequence="5" value="spend_vs_budget"/>
+                <element inactive_on_update="false" label="Program Completion" sequence="6" value="program_completion"/>
+                <element inactive_on_update="false" label="CSR Volunteer Hours" sequence="1" value="csr_hours"/>
+                <element inactive_on_update="false" label="Employee Participation" sequence="2" value="employee_participation"/>
+                <element inactive_on_update="false" label="Beneficiaries Reached" sequence="4" value="beneficiaries"/>
+            </choice>
+        </element>
+        <element attributes="scale=2" hint="Normal KPIs: achievement at or above this value is Green. Inverted KPIs: below this value is Green." label="Green minimum %" max_length="20" name="green_min" type="decimal"/>
+        <element hint="True when a lower value is better, e.g. Spend vs Budget." label="Inverted scale" max_length="40" name="inverted" type="boolean"/>
+        <element attributes="scale=2" hint="Normal KPIs: achievement at or above this value is Orange, otherwise Red. Inverted KPIs: at or below this value is Orange, above is Red." label="Orange minimum %" max_length="20" name="orange_min" type="decimal"/>
+        <element default="true" label="Active" max_length="40" name="active" type="boolean"/>
+        <index name="index" unique="true">
+            <element name="kpi"/>
+        </index>
+    </element>
+</database>

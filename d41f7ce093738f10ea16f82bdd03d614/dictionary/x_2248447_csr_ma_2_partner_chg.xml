@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="66c6156c93f38f10ea16f82bdd03d65f" label="Partner Change Request" max_length="40" name="x_2248447_csr_ma_2_partner_chg" type="collection">
+        <element choice="3" hint="Contact changes may auto-approve; bank and legal changes require review." label="Change type" mandatory="true" max_length="40" name="change_type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Legal / Statutory Details" sequence="3" value="legal"/>
+                <element inactive_on_update="false" label="Bank Details" sequence="2" value="bank"/>
+                <element inactive_on_update="false" label="Contact Details" sequence="1" value="contact"/>
+            </choice>
+        </element>
+        <element choice="3" default="pending" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Auto Approved" sequence="2" value="auto_approved"/>
+                <element inactive_on_update="false" label="Rejected" sequence="4" value="rejected"/>
+                <element inactive_on_update="false" label="Pending" sequence="1" value="pending"/>
+                <element inactive_on_update="false" label="Approved" sequence="3" value="approved"/>
+            </choice>
+        </element>
+        <element label="Approved by" max_length="32" name="approved_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Old value" max_length="1000" name="old_value" type="multi_two_lines"/>
+        <element label="Partner" mandatory="true" max_length="32" name="partner" reference="x_2248447_csr_ma_2_partner" reference_cascade_rule="cascade" type="reference"/>
+        <element display="true" label="Field changed" max_length="100" name="field_changed" type="string"/>
+        <element label="New value" max_length="1000" name="new_value" type="multi_two_lines"/>
+        <element label="Requested by" max_length="32" name="requested_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <index name="index">
+            <element name="approved_by"/>
+        </index>
+        <index name="index2">
+            <element name="partner"/>
+        </index>
+        <index name="index3">
+            <element name="requested_by"/>
+        </index>
+    </element>
+</database>

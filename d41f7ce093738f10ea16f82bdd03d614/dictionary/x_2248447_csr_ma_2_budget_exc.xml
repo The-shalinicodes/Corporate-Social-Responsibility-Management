@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="7356552c93f38f10ea16f82bdd03d61a" label="Budget Exception" max_length="40" name="x_2248447_csr_ma_2_budget_exc" type="collection">
+        <element attributes="scale=2" hint="requested_amount - available_amount." label="Shortfall" max_length="20" name="shortfall" type="decimal"/>
+        <element label="Decided on" max_length="40" name="decided_on" type="glide_date_time"/>
+        <element attributes="scale=2" label="Requested amount" max_length="20" name="requested_amount" type="decimal"/>
+        <element choice="3" default="pending" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Approved" sequence="2" value="approved"/>
+                <element inactive_on_update="false" label="Rejected" sequence="3" value="rejected"/>
+                <element inactive_on_update="false" label="Pending" sequence="1" value="pending"/>
+            </choice>
+        </element>
+        <element label="Approved by" max_length="32" name="approved_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Budget" max_length="32" name="budget" reference="x_2248447_csr_ma_2_budget" reference_cascade_rule="restrict" type="reference"/>
+        <element attributes="scale=2" label="Available amount" max_length="20" name="available_amount" type="decimal"/>
+        <element label="Reason" max_length="4000" name="reason" type="multi_two_lines"/>
+        <element display="true" label="Category" max_length="32" name="category" reference="x_2248447_csr_ma_2_category" reference_cascade_rule="restrict" type="reference"/>
+        <element label="Requested by" max_length="32" name="requested_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Program" max_length="32" name="program" reference="x_2248447_csr_ma_2_program" reference_cascade_rule="restrict" type="reference"/>
+        <index name="index">
+            <element name="approved_by"/>
+        </index>
+        <index name="index2">
+            <element name="budget"/>
+        </index>
+        <index name="index3">
+            <element name="category"/>
+        </index>
+        <index name="index4">
+            <element name="program"/>
+        </index>
+        <index name="index5">
+            <element name="requested_by"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="7ad6956c93f38f10ea16f82bdd03d66b" label="CSR Plan" max_length="40" name="x_2248447_csr_ma_2_plan" type="collection">
+        <element label="Target NGO partners" max_length="40" name="target_ngos" type="integer"/>
+        <element label="Target volunteer hours" max_length="40" name="target_volunteer_hours" type="integer"/>
+        <element label="Target beneficiaries" max_length="40" name="target_beneficiaries" type="integer"/>
+        <element label="Approved by" max_length="32" name="approved_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Approved on" max_length="40" name="approved_on" type="glide_date_time"/>
+        <element choice="3" default="draft" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Superseded" sequence="4" value="superseded"/>
+                <element inactive_on_update="false" label="Pending Approval" sequence="2" value="pending_approval"/>
+                <element inactive_on_update="false" label="Draft" sequence="1" value="draft"/>
+                <element inactive_on_update="false" label="Active" sequence="3" value="active"/>
+                <element inactive_on_update="false" label="Closed" sequence="5" value="closed"/>
+            </choice>
+        </element>
+        <element attributes="scale=2" label="Annual budget" max_length="20" name="annual_budget" type="decimal"/>
+        <element label="Target participating employees" max_length="40" name="target_employees" type="integer"/>
+        <element label="Objectives" max_length="4000" name="objectives" type="multi_two_lines"/>
+        <element attributes="scale=2" label="Target program completion %" max_length="20" name="target_completion_percent" type="decimal"/>
+        <element display="true" hint="For example 2025-2026." label="Fiscal year" mandatory="true" max_length="20" name="fiscal_year" type="string"/>
+        <element default="1" label="Version" max_length="40" name="version" type="integer"/>
+        <element attributes="scale=2" hint="Defaults from the x_2248447_csr_ma_2.disaster_reserve_percent property." label="Disaster reserve %" max_length="20" name="reserve_percent" type="decimal"/>
+        <index name="index">
+            <element name="approved_by"/>
+        </index>
+    </element>
+</database>

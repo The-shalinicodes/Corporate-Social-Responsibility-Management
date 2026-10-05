@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="b6161de893f38f10ea16f82bdd03d664" label="Impact Report" max_length="40" name="x_2248447_csr_ma_2_impact" type="collection">
+        <element label="Reviewer comments" max_length="4000" name="reviewer_comments" type="multi_two_lines"/>
+        <element label="Verified on" max_length="40" name="verified_on" type="glide_date_time"/>
+        <element default="0" label="Beneficiaries reported" max_length="40" name="beneficiaries_reported" type="integer"/>
+        <element label="Outcomes" max_length="4000" name="outcomes" type="multi_two_lines"/>
+        <element label="Submitted on" max_length="40" name="submitted_on" type="glide_date_time"/>
+        <element label="Program" max_length="32" name="program" reference="x_2248447_csr_ma_2_program" reference_cascade_rule="restrict" type="reference"/>
+        <element label="Evidence summary" max_length="4000" name="evidence_summary" type="multi_two_lines"/>
+        <element label="Verified by" max_length="32" name="verified_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Partner" max_length="32" name="partner" reference="x_2248447_csr_ma_2_partner" reference_cascade_rule="restrict" type="reference"/>
+        <element hint="Each overdue report costs the partner 10 points of partner score." label="Overdue" max_length="40" name="overdue_flag" type="boolean"/>
+        <element label="Outputs" max_length="4000" name="outputs" type="multi_two_lines"/>
+        <element default="0" label="Beneficiaries verified" max_length="40" name="beneficiaries_verified" type="integer"/>
+        <element hint="Event end date + x_2248447_csr_ma_2.impact_due_days." label="Due date" max_length="40" name="due_date" type="glide_date"/>
+        <element label="Unit of measure" max_length="40" name="unit_of_measure" type="string"/>
+        <element display="true" label="Event" max_length="32" name="event" reference="x_2248447_csr_ma_2_event" reference_cascade_rule="cascade" type="reference"/>
+        <element choice="3" default="pending" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Verified" sequence="4" value="verified"/>
+                <element inactive_on_update="false" label="Submitted" sequence="2" value="submitted"/>
+                <element inactive_on_update="false" label="Under Review" sequence="3" value="under_review"/>
+                <element inactive_on_update="false" label="Pending" sequence="1" value="pending"/>
+                <element inactive_on_update="false" label="Rejected" sequence="6" value="rejected"/>
+                <element inactive_on_update="false" label="Overdue" sequence="7" value="overdue"/>
+                <element inactive_on_update="false" label="Returned" sequence="5" value="returned"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="event"/>
+        </index>
+        <index name="index2">
+            <element name="partner"/>
+        </index>
+        <index name="index3">
+            <element name="program"/>
+        </index>
+        <index name="index4">
+            <element name="verified_by"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[{
+  "name": "x-2248447-csr-management",
+  "version": "1.0.0",
+  "description": "[BUILD AGENT GENERATED]:  Centralized Corporate Social Responsibility governance platform. Manages the full CSR lifecycle: annual CSR planning and category budgets, NGO partner onboarding with compliance verification and risk scoring, partner document maintenance, CSR program and volunteering event creation with budget commitment, employee registration with waitlists and VTO approval, attendance and volunteer hour tracking with recognition badges and certificates, NGO impact submission and evidence verification, expense reconciliation and KPI calculation, and role-based dashboards with closure checklists and audit archiving.",
+  "license": "UNLICENSED",
+  "imports": {
+    "#now:*": "./@types/servicenow/fluent/*/index.js"
+  },
+  "scripts": {
+    "build": "now-sdk build",
+    "deploy": "now-sdk install",
+    "transform": "now-sdk transform",
+    "types": "now-sdk dependencies"
+  },
+  "devDependencies": {
+    "@servicenow/sdk": "4.13.3",
+    "@servicenow/glide": "27.0.5"
+  }
+}]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/package.json</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:41</sys_created_on>
+        <sys_id>567ec78dc8884c6085a238e0c344e03f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/package.json</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_567ec78dc8884c6085a238e0c344e03f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:41</sys_updated_on>
+    </sys_module>
+</record_update>

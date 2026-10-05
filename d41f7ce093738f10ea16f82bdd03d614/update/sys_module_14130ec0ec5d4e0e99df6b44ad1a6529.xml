@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[import { gs, GlideRecord } from '@servicenow/glide';
+export function detectDuplicatePartner(current, previous) {
+    var regNum = current.getValue('registration_number');
+    var pan = current.getValue('pan');
+    if (!regNum || !pan)
+        return;
+    var gr = new GlideRecord('x_2248447_csr_ma_2_partner');
+    gr.addQuery('registration_number', regNum);
+    gr.addQuery('pan', pan);
+    gr.addQuery('sys_id', '!=', current.getUniqueValue());
+    gr.query();
+    if (gr.next()) {
+        current.setValue('duplicate_flag', true);
+        gs.addErrorMessage('Duplicate partner detected: registration number and PAN combination already exists for ' + gr.getValue('name'));
+        current.setAbortAction(true);
+    }
+}
+export function recalcPartnerScore(current, previous) {
+    var overdue = parseInt(current.getValue('overdue_reports')) || 0;
+    var lapses = parseInt(current.getValue('document_lapses')) || 0;
+    var score = 100 - (10 * overdue) - (20 * lapses);
+    if (score < 0)
+        score = 0;
+    current.setValue('partner_score', score);
+}
+export function checkCorrectionLimit(current, previous) {
+    var newStatus = current.getValue('status');
+    var oldStatus = previous.getValue('status');
+    if (newStatus === 'draft' && (oldStatus === 'pending_compliance' || oldStatus === 'pending_manager')) {
+        var attempts = parseInt(current.getValue('correction_attempts')) || 0;
+        attempts++;
+        current.setValue('correction_attempts', attempts);
+        var limit = parseInt(gs.getProperty('x_2248447_csr_ma_2.partner_correction_attempt_limit')) || 3;
+        if (attempts >= limit) {
+            current.setValue('status', 'rejected');
+            gs.addErrorMessage('Partner registration rejected: maximum correction attempts (' + limit + ') exceeded.');
+        }
+    }
+}
+export function autoApproveContactChange(current, previous) {
+    var changeType = current.getValue('change_type');
+    if (changeType === 'contact') {
+        current.setValue('status', 'auto_approved');
+    }
+}
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/partner-validation.ts</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:35</sys_created_on>
+        <sys_id>14130ec0ec5d4e0e99df6b44ad1a6529</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/partner-validation.ts</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_14130ec0ec5d4e0e99df6b44ad1a6529</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:35</sys_updated_on>
+    </sys_module>
+</record_update>

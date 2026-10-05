@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Days after a partner document expiry date during which the partner stays usable. After the grace period the document counts as a document lapse. Whole days.</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_2248447_csr_ma_2.document_grace_period_days</name>
+        <read_roles>admin,x_2248447_csr_ma_2.csr_admin,x_2248447_csr_ma_2.csr_compliance</read_roles>
+        <suffix>document_grace_period_days</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:08:04</sys_created_on>
+        <sys_id>c30ab073252a4823bbd0f5f9416399b6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2.document_grace_period_days</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_properties_c30ab073252a4823bbd0f5f9416399b6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:08:04</sys_updated_on>
+        <type>integer</type>
+        <value>30</value>
+        <write_roles>admin,x_2248447_csr_ma_2.csr_admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=c30ab073252a4823bbd0f5f9416399b6"/>
+</record_update>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="1056d12c93f38f10ea16f82bdd03d650" label="Category Budget" max_length="40" name="x_2248447_csr_ma_2_budget" type="collection">
+        <element attributes="scale=2" default="0" label="Approved" max_length="20" name="approved" type="decimal"/>
+        <element attributes="scale=2" default="0" hint="Committed at program approval, not at expense time." label="Committed" max_length="20" name="committed" type="decimal"/>
+        <element attributes="scale=2" default="0" hint="approved - (spent + committed)." label="Available" max_length="20" name="available" type="decimal"/>
+        <element label="Plan" mandatory="true" max_length="32" name="plan" reference="x_2248447_csr_ma_2_plan" reference_cascade_rule="cascade" type="reference"/>
+        <element display="true" label="Category" mandatory="true" max_length="32" name="category" reference="x_2248447_csr_ma_2_category" reference_cascade_rule="restrict" type="reference"/>
+        <element attributes="scale=2" default="0" label="Spent" max_length="20" name="spent" type="decimal"/>
+        <index name="index">
+            <element name="category"/>
+        </index>
+        <index name="index2">
+            <element name="plan"/>
+        </index>
+        <index name="index3" unique="true">
+            <element name="plan"/>
+            <element name="category"/>
+        </index>
+    </element>
+</database>

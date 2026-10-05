@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="45d591e893f38f10ea16f82bdd03d67a" label="Recognition" max_length="40" name="x_2248447_csr_ma_2_recognition" type="collection">
+        <element label="Awarded on" max_length="40" name="awarded_on" type="glide_date_time"/>
+        <element label="Milestone hours" max_length="40" name="milestone_hours" type="integer"/>
+        <element label="Certificate reference" max_length="100" name="certificate_reference" type="string"/>
+        <element display="true" label="Employee" mandatory="true" max_length="32" name="employee" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element choice="3" default="badge" label="Recognition type" max_length="40" name="recognition_type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Badge" sequence="1" value="badge"/>
+                <element inactive_on_update="false" label="Certificate" sequence="2" value="certificate"/>
+            </choice>
+        </element>
+        <element hint="Event that triggered the award, when applicable." label="Event" max_length="32" name="event" reference="x_2248447_csr_ma_2_event" reference_cascade_rule="none" type="reference"/>
+        <element label="Fiscal year" max_length="20" name="fiscal_year" type="string"/>
+        <element choice="1" hint="Levels follow the x_2248447_csr_ma_2.badge_milestones property." label="Badge level" max_length="40" name="badge_level" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Silver (25 hours)" sequence="2" value="silver_25"/>
+                <element inactive_on_update="false" label="Gold (50 hours)" sequence="3" value="gold_50"/>
+                <element inactive_on_update="false" label="Bronze (10 hours)" sequence="1" value="bronze_10"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="employee"/>
+        </index>
+        <index name="index2">
+            <element name="event"/>
+        </index>
+    </element>
+</database>

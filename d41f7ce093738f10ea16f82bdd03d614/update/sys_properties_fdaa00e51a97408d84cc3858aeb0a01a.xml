@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Maximum number of times a partner onboarding or document submission may be returned for correction before the application is rejected outright.</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_2248447_csr_ma_2.partner_correction_attempt_limit</name>
+        <read_roles>admin,x_2248447_csr_ma_2.csr_admin,x_2248447_csr_ma_2.csr_compliance</read_roles>
+        <suffix>partner_correction_attempt_limit</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:08:07</sys_created_on>
+        <sys_id>fdaa00e51a97408d84cc3858aeb0a01a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2.partner_correction_attempt_limit</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_properties_fdaa00e51a97408d84cc3858aeb0a01a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:08:07</sys_updated_on>
+        <type>integer</type>
+        <value>3</value>
+        <write_roles>admin,x_2248447_csr_ma_2.csr_admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=fdaa00e51a97408d84cc3858aeb0a01a"/>
+</record_update>
