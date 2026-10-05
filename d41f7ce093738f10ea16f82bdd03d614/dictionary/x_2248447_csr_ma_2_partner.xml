@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="45f5d5e893f38f10ea16f82bdd03d640" label="CSR Partner" max_length="40" name="x_2248447_csr_ma_2_partner" type="collection">
+        <element label="Email" max_length="100" name="email" type="email"/>
+        <element choice="3" default="draft" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Suspended" sequence="5" value="suspended"/>
+                <element inactive_on_update="false" label="Deactivated" sequence="6" value="deactivated"/>
+                <element inactive_on_update="false" label="Active" sequence="4" value="active"/>
+                <element inactive_on_update="false" label="Rejected" sequence="8" value="rejected"/>
+                <element inactive_on_update="false" label="Draft" sequence="1" value="draft"/>
+                <element inactive_on_update="false" label="Pending Manager Approval" sequence="3" value="pending_manager"/>
+                <element inactive_on_update="false" label="Pending Compliance Verification" sequence="2" value="pending_compliance"/>
+                <element inactive_on_update="false" label="Blacklisted" sequence="7" value="blacklisted"/>
+            </choice>
+        </element>
+        <element label="Possible duplicate" max_length="40" name="duplicate_flag" type="boolean"/>
+        <element label="Address" max_length="1000" name="address" type="multi_two_lines"/>
+        <element label="Bank account number" max_length="40" name="bank_account" type="string"/>
+        <element default="0" label="Document lapses" max_length="40" name="document_lapses" type="integer"/>
+        <element default="0" label="Risk score" max_length="40" name="risk_score" type="integer"/>
+        <element default="0" label="Overdue impact reports" max_length="40" name="overdue_reports" type="integer"/>
+        <element label="Registration number" mandatory="true" max_length="60" name="registration_number" type="string"/>
+        <element label="Contact person" max_length="100" name="contact_person" type="string"/>
+        <element label="Compliance verified by" max_length="32" name="compliance_verified_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Phone" max_length="40" name="phone" type="string"/>
+        <element label="Focus areas" max_length="255" name="focus_areas" type="string"/>
+        <element default="0" hint="Capped by the x_2248447_csr_ma_2.partner_correction_attempt_limit property." label="Correction attempts" max_length="40" name="correction_attempts" type="integer"/>
+        <element label="Bank IFSC" max_length="20" name="bank_ifsc" type="string"/>
+        <element hint="NGO portal login used to submit documents and impact reports." label="Portal user" max_length="32" name="portal_user" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element display="true" label="Partner name" mandatory="true" max_length="150" name="name" type="string"/>
+        <element default="100" hint="100 - (10 * overdue impact reports) - (20 * document lapses)." label="Partner score" max_length="40" name="partner_score" type="integer"/>
+        <element label="PAN" mandatory="true" max_length="20" name="pan" type="string"/>
+        <index name="index">
+            <element name="compliance_verified_by"/>
+        </index>
+        <index name="index2">
+            <element name="portal_user"/>
+        </index>
+        <index name="index3" unique="true">
+            <element name="registration_number"/>
+            <element name="pan"/>
+        </index>
+    </element>
+</database>

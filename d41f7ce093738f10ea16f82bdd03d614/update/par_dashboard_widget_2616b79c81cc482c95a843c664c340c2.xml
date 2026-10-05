@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="par_dashboard_widget">
+    <par_dashboard_widget action="INSERT_OR_UPDATE">
+        <canvas display_value="">b5c2b41c4cd543ba8498e90ffe7a9058</canvas>
+        <component display_value="Horizontal bar">85855283b7e03010097cb81cde11a91d</component>
+        <component_props>{"allowAdditionalGroupByPerMetric":false,"allowChangeDateRange":false,"scoreIcon":"","applyDateRange":false,"autoAggregatePeriods":false,"bareBorder":false,"cacheExpirationTime":0,"chartVariation":"stacked","dataLabelPosition":"middle","dataLabelsType":"both","dateFormat":"default","disableTooltip":false,"emptyStateAlignment":"vertical-centered","emptyStateContent":"There are no scores available for the selected criteria. Contact your admin for more info.","emptyStateHeading":"No data available.","emptyStateHeadingLevel":3,"emptyStateIllustration":"no-data","enableAddZerosAtApi":true,"enableClickAndStay":false,"enableCustomEmptyState":false,"enableDrilldown":true,"enableRealTimeUpdate":false,"extensionType":"step","filterConfigurations":"@state.parFilters","followFilters":true,"freezeFirstColumn":true,"freezeFooter":false,"freezeHeader":true,"gaugeArcAngle":"180","headerTitleAlignment":"start","headingLevel":2,"headingPosition":"top","hideDevSettings":false,"hideMatrixAggregate":false,"hideYAxis0":false,"hideYAxis1":false,"hideYAxis2":false,"hideYAxis3":false,"hideYAxis4":false,"iconStyle":"background","legendExpandToFit":false,"legendHorizontalAlignment":"center","legendPosition":"bottom","lineClamp":1,"lineStrokeWidth":"2","mapSysId":"93b8a3a2d7101200bd4a4ebfae61033a","minValue":0,"newReporting":false,"numberOfPeriods":3,"period":"M","registerOrientation":"horizontal","registerPosition":"bottom","scoreAlignment":"start","scoreLabel":"none","scoreSize":"auto","scoreType":"latest","showAbsolutePeriod":false,"showAdditionalGroupBySelector":false,"showAlternateColumnColors":false,"showAlternateRowColors":true,"showBorder":true,"showCacheTime":true,"showChange":false,"showChangeFrom":"previous","showChangePercentage":false,"showClosestSeriesOnHover":true,"showColumnAggregate":true,"showColumnDividers":true,"showComment":false,"showConfidenceBand":false,"showContinuousLine":true,"showDataLabels":true,"showDataPassthrough":false,"showDataTable":false,"showDateRangeByDefault":false,"showExportOptions":true,"showFilterAsSeparateSeries":false,"showFilterIcon":true,"showFirstGroupAggregate":false,"showForecast":false,"showForecastRange":false,"showGapPercentage":false,"showHeader":true,"showHeaderSeparator":false,"showLabelFirst":false,"showLegend":true,"showLegendValue":false,"showLoadingIndicator":false,"showMarkers":false,"showMaximumRange":false,"showMetricLabel":false,"showOverlappingLabels":false,"showPercentageOfTotalInTooltip":true,"showPivotExpanded":true,"showRangeLabels":false,"showRangeLimit":true,"showRefresh":true,"showRegister":true,"showRegisterOnSameLine":false,"showRegisterPercentage":false,"showRegisterValue":false,"showRowAggregate":true,"showRowDividers":false,"showScoreDate":false,"showScoreUpdateTime":false,"showSecondGroupAggregate":false,"showSparkline":false,"showStackedValues":"none","showSubAggregate":true,"showTarget":false,"showThreshold":false,"showTotalAggregate":false,"showTrend":false,"showXGrid":false,"showYGrid":true,"showZero":false,"sortByOrder":"desc","sparklineStyle":"area","truncateColumnHeader":true,"truncateFirstColumn":true,"truncationType":"end","useCurrentDateForEnd":false,"useDataCache":false,"useRelativeScoreTime":false,"valueLabelSize":"md","wrapColumnHeader":false,"wrapElements":false,"wrapTitle":false,"xAxisHidden":false,"xAxisMaxLabelSize":100,"xAxisTruncationType":"end","xAxisWrapLabels":false,"yAxis0Position":"left","yAxis1Position":"right","yAxis2Position":"right","yAxis3Position":"right","yAxis4Position":"right","yAxisHidden":false,"yAxisPosition":"bottom","yAxisShowGrid":true,"yAxisStyle":"clean","colorConfig":{"type":"default"},"userInfo":"@context.session.user","headerTitle":"Budget Utilization by Category","dataSources":[{"sourceType":"table","tableOrViewName":"x_2248447_csr_ma_2_budget","filterQuery":"","id":"ds_1"}],"groupBy":[{"groupBy":[{"dataSource":"ds_1","groupByField":"category","isChoice":false}],"maxNumberOfGroups":"ALL","sortBy":"value","sortByOrder":"desc"}],"metrics":[{"dataSource":"ds_1","aggregateFunction":"COUNT","axisId":"primary"}]}</component_props>
+        <h>16</h>
+        <name/>
+        <required_translations>[{"comment":"","code":"PAR_DASHBOARD.e1842200a96c47e88195264d728c79a7.2616b79c81cc482c95a843c664c340c2","message":"Budget Utilization by Category"},{"comment":"","code":"PAR_DASHBOARD.e1842200a96c47e88195264d728c79a7.2616b79c81cc482c95a843c664c340c2","message":"No data available."},{"comment":"","code":"PAR_DASHBOARD.e1842200a96c47e88195264d728c79a7.2616b79c81cc482c95a843c664c340c2","message":"There are no scores available for the selected criteria. Contact your admin for more info."}]</required_translations>
+        <stored_component/>
+        <sys_class_name>par_dashboard_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:39:33</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>2616b79c81cc482c95a843c664c340c2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_overrides/>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>par_dashboard_widget_2616b79c81cc482c95a843c664c340c2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:39:33</sys_updated_on>
+        <visualization/>
+        <w>24</w>
+        <widget_props/>
+        <x>0</x>
+        <y>10</y>
+    </par_dashboard_widget>
+</record_update>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="48a69d2c93f38f10ea16f82bdd03d654" label="CSR Category" max_length="40" name="x_2248447_csr_ma_2_category" type="collection">
+        <element label="Description" max_length="4000" name="description" type="multi_two_lines"/>
+        <element hint="Short code used in budget and report labels." label="Code" max_length="20" name="code" type="string"/>
+        <element choice="3" default="regular" hint="Regular category budgets must total the annual budget less the disaster reserve." label="Type" max_length="40" name="type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Disaster" sequence="2" value="disaster"/>
+                <element inactive_on_update="false" label="Regular" sequence="1" value="regular"/>
+            </choice>
+        </element>
+        <element default="true" label="Active" max_length="40" name="active" type="boolean"/>
+        <element display="true" label="Name" mandatory="true" max_length="100" name="name" type="string"/>
+        <index name="index" unique="true">
+            <element name="code"/>
+        </index>
+    </element>
+</database>

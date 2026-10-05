@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="8bb6916c93f38f10ea16f82bdd03d600" label="CSR Expense" max_length="40" name="x_2248447_csr_ma_2_expense" type="collection">
+        <element display="true" label="Finance reference" max_length="100" name="finance_reference" type="string"/>
+        <element label="Recorded by" max_length="32" name="recorded_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Event" max_length="32" name="event" reference="x_2248447_csr_ma_2_event" reference_cascade_rule="none" type="reference"/>
+        <element attributes="scale=2" label="Amount" max_length="20" name="amount" type="decimal"/>
+        <element label="Reconciled on" max_length="40" name="reconciled_on" type="glide_date_time"/>
+        <element choice="3" default="draft" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Reconciled" sequence="3" value="reconciled"/>
+                <element inactive_on_update="false" label="Rejected" sequence="4" value="rejected"/>
+                <element inactive_on_update="false" label="Recorded" sequence="2" value="recorded"/>
+                <element inactive_on_update="false" label="Draft" sequence="1" value="draft"/>
+            </choice>
+        </element>
+        <element choice="3" default="manual" label="Source" max_length="40" name="source" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Manual" sequence="1" value="manual"/>
+                <element inactive_on_update="false" label="Integration" sequence="2" value="integration"/>
+            </choice>
+        </element>
+        <element label="Program" max_length="32" name="program" reference="x_2248447_csr_ma_2_program" reference_cascade_rule="restrict" type="reference"/>
+        <element label="Budget" max_length="32" name="budget" reference="x_2248447_csr_ma_2_budget" reference_cascade_rule="restrict" type="reference"/>
+        <element label="Expense date" max_length="40" name="expense_date" type="glide_date"/>
+        <index name="index">
+            <element name="budget"/>
+        </index>
+        <index name="index2">
+            <element name="event"/>
+        </index>
+        <index name="index3">
+            <element name="program"/>
+        </index>
+        <index name="index4">
+            <element name="recorded_by"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[(function () {
+    /**
+     * CSR Document Expiry Monitor
+     * Runs daily to check partner documents approaching expiry.
+     * Sends reminders at 60, 30, and 7 days before expiry.
+     * After grace period, marks documents as expired and increments partner document_lapses.
+     */
+    try {
+        var reminderDaysStr = gs.getProperty('x_2248447_csr_ma_2.document_expiry_reminder_days') || '60,30,7';
+        var graceDays = parseInt(gs.getProperty('x_2248447_csr_ma_2.document_grace_period_days')) || 30;
+        var reminderDays = reminderDaysStr.split(',').map(function (d) { return parseInt(d.trim()); });
+
+        var today = new GlideDateTime();
+        var todayStr = today.getLocalDate().getValue();
+        var processedCount = 0;
+
+        // Check each reminder threshold
+        for (var r = 0; r < reminderDays.length; r++) {
+            var days = reminderDays[r];
+            var targetDate = new GlideDateTime();
+            targetDate.addDaysUTC(days);
+            var targetStr = targetDate.getLocalDate().getValue();
+
+            var gr = new GlideRecord('x_2248447_csr_ma_2_partner_doc');
+            gr.addQuery('expiry_date', targetStr);
+            gr.addQuery('status', 'IN', 'valid,expiring');
+            gr.query();
+
+            while (gr.next()) {
+                if (gr.getValue('status') === 'valid') {
+                    gr.setValue('status', 'expiring');
+                    gr.update();
+                }
+                processedCount++;
+                gs.info('CSR Doc Expiry: Document ' + gr.getValue('document_number') +
+                    ' for partner ' + gr.getDisplayValue('partner') +
+                    ' expires in ' + days + ' days.');
+            }
+        }
+
+        // Check for expired documents (expiry_date <= today and status not already expired)
+        var expiredGr = new GlideRecord('x_2248447_csr_ma_2_partner_doc');
+        expiredGr.addQuery('expiry_date', '<=', todayStr);
+        expiredGr.addQuery('status', 'IN', 'valid,expiring,pending_verification');
+        expiredGr.query();
+
+        while (expiredGr.next()) {
+            var expiryDate = expiredGr.getValue('expiry_date');
+            var graceEnd = new GlideDateTime(expiryDate);
+            graceEnd.addDaysUTC(graceDays);
+            expiredGr.setValue('grace_period_end', graceEnd.getLocalDate().getValue());
+            expiredGr.setValue('status', 'expired');
+            expiredGr.update();
+
+            // Increment partner document_lapses
+            var partnerId = expiredGr.getValue('partner');
+            if (partnerId) {
+                var partner = new GlideRecord('x_2248447_csr_ma_2_partner');
+                if (partner.get(partnerId)) {
+                    var lapses = parseInt(partner.getValue('document_lapses')) || 0;
+                    partner.setValue('document_lapses', lapses + 1);
+                    partner.update();
+                    gs.info('CSR Doc Expiry: Partner ' + partner.getValue('name') +
+                        ' document lapsed. Total lapses: ' + (lapses + 1));
+                }
+            }
+            processedCount++;
+        }
+
+        gs.info('CSR Document Expiry Monitor: Processed ' + processedCount + ' documents.');
+    } catch (e) {
+        gs.error('CSR Document Expiry Monitor failed: ' + e.message);
+    }
+})();
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/scheduled/doc-expiry-monitor.server.js</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:34</sys_created_on>
+        <sys_id>0341e255c6404eab807dcc2ba649e05d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/scheduled/doc-expiry-monitor.server.js</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_0341e255c6404eab807dcc2ba649e05d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:34</sys_updated_on>
+    </sys_module>
+</record_update>

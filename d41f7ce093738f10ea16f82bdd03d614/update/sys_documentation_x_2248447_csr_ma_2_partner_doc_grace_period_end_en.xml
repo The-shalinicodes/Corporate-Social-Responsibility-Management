@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="grace_period_end" label="Grace period end" language="en" table="x_2248447_csr_ma_2_partner_doc">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>grace_period_end</element>
+            <help/>
+            <hint>expiry_date + x_2248447_csr_ma_2.document_grace_period_days.</hint>
+            <label>Grace period end</label>
+            <language>en</language>
+            <name>x_2248447_csr_ma_2_partner_doc</name>
+            <plural>Grace period ends</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-10-04 18:41:43</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Grace period end</sys_name>
+            <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+            <sys_update_name>sys_documentation_x_2248447_csr_ma_2_partner_doc_grace_period_end_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-10-04 18:41:43</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

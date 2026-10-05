@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[import { gs, GlideRecord } from '@servicenow/glide';
+export function flagHighValueProgram(current, previous) {
+    var threshold = parseInt(gs.getProperty('x_2248447_csr_ma_2.high_value_program_threshold')) || 500000;
+    var proposedBudget = parseFloat(current.getValue('proposed_budget')) || 0;
+    current.setValue('high_value', proposedBudget >= threshold);
+}
+export function checkBudgetAvailability(current, previous) {
+    var newStatus = current.getValue('status');
+    var oldStatus = previous.getValue('status');
+    if (newStatus !== 'finance_approval' || oldStatus === 'finance_approval')
+        return;
+    var catId = current.getValue('category');
+    var planId = current.getValue('plan');
+    if (!catId || !planId)
+        return;
+    var budget = new GlideRecord('x_2248447_csr_ma_2_budget');
+    budget.addQuery('category', catId);
+    budget.addQuery('plan', planId);
+    budget.query();
+    if (budget.next()) {
+        var available = parseFloat(budget.getValue('available')) || 0;
+        var proposed = parseFloat(current.getValue('proposed_budget')) || 0;
+        if (proposed > available) {
+            gs.addErrorMessage('Insufficient budget. Proposed: ' + proposed + ', Available: ' + available + '. Please revise the proposal or request a budget exception.');
+            current.setAbortAction(true);
+        }
+    }
+}
+export function commitBudgetOnApproval(current, previous) {
+    var newStatus = current.getValue('status');
+    var oldStatus = previous.getValue('status');
+    if (newStatus !== 'approved' || oldStatus === 'approved')
+        return;
+    var approvedBudget = parseFloat(current.getValue('approved_budget')) || parseFloat(current.getValue('proposed_budget')) || 0;
+    if (approvedBudget <= 0)
+        return;
+    if (!current.getValue('approved_budget') || parseFloat(current.getValue('approved_budget')) === 0) {
+        // If approved_budget not set, we can't set it in after rule - this is informational
+        gs.info('CSR: Program ' + current.getValue('title') + ' approved with budget ' + approvedBudget);
+    }
+    var catId = current.getValue('category');
+    var planId = current.getValue('plan');
+    var budget = new GlideRecord('x_2248447_csr_ma_2_budget');
+    budget.addQuery('category', catId);
+    budget.addQuery('plan', planId);
+    budget.query();
+    if (budget.next()) {
+        var committed = parseFloat(budget.getValue('committed')) || 0;
+        var available = parseFloat(budget.getValue('available')) || 0;
+        budget.setValue('committed', committed + approvedBudget);
+        budget.setValue('available', available - approvedBudget);
+        budget.update();
+        gs.info('CSR: Committed ' + approvedBudget + ' to category budget. New committed: ' + (committed + approvedBudget));
+    }
+}
+export function releaseBudgetOnRejection(current, previous) {
+    var newStatus = current.getValue('status');
+    var oldStatus = previous.getValue('status');
+    var terminalStates = ['rejected', 'closed'];
+    var approvedStates = ['approved', 'active', 'completed'];
+    if (terminalStates.indexOf(newStatus) < 0)
+        return;
+    if (approvedStates.indexOf(oldStatus) < 0 && oldStatus !== 'head_approval')
+        return;
+    var approvedBudget = parseFloat(current.getValue('approved_budget')) || 0;
+    if (approvedBudget <= 0)
+        return;
+    var catId = current.getValue('category');
+    var planId = current.getValue('plan');
+    var budget = new GlideRecord('x_2248447_csr_ma_2_budget');
+    budget.addQuery('category', catId);
+    budget.addQuery('plan', planId);
+    budget.query();
+    if (budget.next()) {
+        var committed = parseFloat(budget.getValue('committed')) || 0;
+        var available = parseFloat(budget.getValue('available')) || 0;
+        var releaseAmt = Math.min(approvedBudget, committed);
+        budget.setValue('committed', committed - releaseAmt);
+        budget.setValue('available', available + releaseAmt);
+        budget.update();
+        gs.info('CSR: Released ' + releaseAmt + ' from committed budget for rejected/closed program.');
+    }
+}
+export function blockSuspendedPartnerProgram(current, previous) {
+    var partnerId = current.getValue('partner');
+    if (!partnerId)
+        return;
+    var partner = new GlideRecord('x_2248447_csr_ma_2_partner');
+    if (partner.get(partnerId)) {
+        var status = partner.getValue('status');
+        if (status === 'suspended' || status === 'deactivated' || status === 'blacklisted') {
+            gs.addErrorMessage('Cannot create program: Partner "' + partner.getValue('name') + '" is ' + status + '.');
+            current.setAbortAction(true);
+        }
+    }
+}
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/program-validation.ts</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:42</sys_created_on>
+        <sys_id>85d04a161d8442729d6fc94c0929fdaa</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/program-validation.ts</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_85d04a161d8442729d6fc94c0929fdaa</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:42</sys_updated_on>
+    </sys_module>
+</record_update>

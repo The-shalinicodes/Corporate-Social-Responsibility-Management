@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="fac511e893f38f10ea16f82bdd03d6b1" label="CSR Target" max_length="40" name="x_2248447_csr_ma_2_target" type="collection">
+        <element choice="3" display="true" label="KPI" mandatory="true" max_length="40" name="kpi" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="NGO Engagement" sequence="3" value="ngo_engagement"/>
+                <element inactive_on_update="false" label="Spend vs Budget" sequence="5" value="spend_vs_budget"/>
+                <element inactive_on_update="false" label="Employee Participation" sequence="2" value="employee_participation"/>
+                <element inactive_on_update="false" label="CSR Volunteer Hours" sequence="1" value="csr_hours"/>
+                <element inactive_on_update="false" label="Beneficiaries Reached" sequence="4" value="beneficiaries"/>
+                <element inactive_on_update="false" label="Program Completion" sequence="6" value="program_completion"/>
+            </choice>
+        </element>
+        <element hint="For example hours, employees, NGOs, beneficiaries, percent." label="Unit" max_length="40" name="unit" type="string"/>
+        <element label="Plan" mandatory="true" max_length="32" name="plan" reference="x_2248447_csr_ma_2_plan" reference_cascade_rule="cascade" type="reference"/>
+        <element attributes="scale=2" label="Target value" max_length="20" name="target_value" type="decimal"/>
+        <index name="index">
+            <element name="plan"/>
+        </index>
+    </element>
+</database>

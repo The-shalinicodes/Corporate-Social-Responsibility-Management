@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role">
+    <sys_user_role action="INSERT_OR_UPDATE">
+        <assignable_by/>
+        <can_delegate>true</can_delegate>
+        <description>CSR Manager. Creates and submits CSR programs, gives the manager-stage approval for NGO partner onboarding, approves partner change requests for bank and legal data, approves Volunteer Time Off requests, and owns event publication.</description>
+        <elevated_privilege>false</elevated_privilege>
+        <federated_id>OqTAXQJbwgvHd1EQAlQJq6W929EEuvJaEYSgYWrCSG8=</federated_id>
+        <grantable>true</grantable>
+        <includes_roles/>
+        <name>x_2248447_csr_ma_2.csr_manager</name>
+        <scoped_admin>false</scoped_admin>
+        <suffix>csr_manager</suffix>
+        <sys_class_name>sys_user_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:14:09</sys_created_on>
+        <sys_id>b94e9294f42b4f36a6ccf00a795079e6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2.csr_manager</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_user_role_b94e9294f42b4f36a6ccf00a795079e6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:14:09</sys_updated_on>
+    </sys_user_role>
+</record_update>

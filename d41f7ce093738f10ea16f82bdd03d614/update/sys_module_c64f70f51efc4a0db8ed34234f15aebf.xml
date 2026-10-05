@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide';
+export function validateRegistration(current, previous) {
+    var employeeId = current.getValue('employee');
+    var eventId = current.getValue('event');
+    if (!employeeId || !eventId)
+        return;
+    // Set registered_on timestamp
+    current.setValue('registered_on', new GlideDateTime().getValue());
+    // 1. Annual participation cap check
+    var cap = parseInt(gs.getProperty('x_2248447_csr_ma_2.employee_annual_participation_cap')) || 12;
+    var now = new GlideDateTime();
+    var yearStart = now.getYearUTC() + '-01-01';
+    var yearEnd = now.getYearUTC() + '-12-31';
+    var regCount = new GlideRecord('x_2248447_csr_ma_2_event_reg');
+    regCount.addQuery('employee', employeeId);
+    regCount.addQuery('state', '!=', 'cancelled');
+    regCount.addQuery('state', '!=', 'late_cancelled');
+    regCount.addQuery('registered_on', '>=', yearStart);
+    regCount.query();
+    var count = 0;
+    while (regCount.next())
+        count++;
+    if (count >= cap) {
+        gs.addErrorMessage('Annual participation cap of ' + cap + ' events reached. Cannot register for more events this year.');
+        current.setAbortAction(true);
+        return;
+    }
+    // 2. Schedule overlap check
+    var evt = new GlideRecord('x_2248447_csr_ma_2_event');
+    if (!evt.get(eventId))
+        return;
+    var eventDate = evt.getValue('event_date');
+    var overlap = new GlideRecord('x_2248447_csr_ma_2_event_reg');
+    overlap.addQuery('employee', employeeId);
+    overlap.addQuery('state', 'confirmed');
+    overlap.addQuery('event.event_date', eventDate);
+    overlap.addQuery('sys_id', '!=', current.getUniqueValue());
+    overlap.query();
+    if (overlap.next()) {
+        gs.addErrorMessage('Schedule conflict: you already have a confirmed registration on ' + eventDate + '.');
+        current.setAbortAction(true);
+        return;
+    }
+    // 3. Seat availability
+    var confirmed = parseInt(evt.getValue('confirmed_count')) || 0;
+    var capacity = parseInt(evt.getValue('capacity')) || 0;
+    if (capacity > 0 && confirmed >= capacity) {
+        // Add to waitlist
+        var waitlistCount = parseInt(evt.getValue('waitlist_count')) || 0;
+        current.setValue('state', 'waitlisted');
+        current.setValue('waitlist_position', waitlistCount + 1);
+        gs.addInfoMessage('Event is full. You have been added to the waitlist at position ' + (waitlistCount + 1) + '.');
+    }
+    else {
+        current.setValue('state', 'confirmed');
+        current.setValue('waitlist_position', 0);
+    }
+}
+export function updateEventCounts(current, previous) {
+    var eventId = current.getValue('event');
+    if (!eventId)
+        return;
+    var confirmed = new GlideRecord('x_2248447_csr_ma_2_event_reg');
+    confirmed.addQuery('event', eventId);
+    confirmed.addQuery('state', 'confirmed');
+    confirmed.query();
+    var cCount = 0;
+    while (confirmed.next())
+        cCount++;
+    var waitlisted = new GlideRecord('x_2248447_csr_ma_2_event_reg');
+    waitlisted.addQuery('event', eventId);
+    waitlisted.addQuery('state', 'waitlisted');
+    waitlisted.query();
+    var wCount = 0;
+    while (waitlisted.next())
+        wCount++;
+    var evt = new GlideRecord('x_2248447_csr_ma_2_event');
+    if (evt.get(eventId)) {
+        evt.setValue('confirmed_count', cCount);
+        evt.setValue('waitlist_count', wCount);
+        evt.update();
+    }
+}
+export function promoteWaitlistOnCancel(current, previous) {
+    var newState = current.getValue('state');
+    var oldState = previous.getValue('state');
+    if ((newState !== 'cancelled' && newState !== 'late_cancelled') || oldState !== 'confirmed')
+        return;
+    var eventId = current.getValue('event');
+    if (!eventId)
+        return;
+    // Find first waitlisted employee (lowest position)
+    var waitlisted = new GlideRecord('x_2248447_csr_ma_2_event_reg');
+    waitlisted.addQuery('event', eventId);
+    waitlisted.addQuery('state', 'waitlisted');
+    waitlisted.orderBy('waitlist_position');
+    waitlisted.setLimit(1);
+    waitlisted.query();
+    if (waitlisted.next()) {
+        waitlisted.setValue('state', 'confirmed');
+        waitlisted.setValue('waitlist_position', 0);
+        waitlisted.update();
+        gs.info('CSR: Promoted employee ' + waitlisted.getValue('employee') + ' from waitlist to confirmed.');
+        // Decrement remaining waitlist positions
+        var remaining = new GlideRecord('x_2248447_csr_ma_2_event_reg');
+        remaining.addQuery('event', eventId);
+        remaining.addQuery('state', 'waitlisted');
+        remaining.orderBy('waitlist_position');
+        remaining.query();
+        var pos = 1;
+        while (remaining.next()) {
+            remaining.setValue('waitlist_position', pos);
+            remaining.update();
+            pos++;
+        }
+    }
+}
+export function detectLateCancellation(current, previous) {
+    var newState = current.getValue('state');
+    if (newState !== 'cancelled')
+        return;
+    var eventId = current.getValue('event');
+    if (!eventId)
+        return;
+    var evt = new GlideRecord('x_2248447_csr_ma_2_event');
+    if (!evt.get(eventId))
+        return;
+    var eventDate = evt.getValue('event_date');
+    if (!eventDate)
+        return;
+    var lateHours = parseInt(gs.getProperty('x_2248447_csr_ma_2.late_cancellation_hours')) || 24;
+    var eventStart = new GlideDateTime(eventDate);
+    var now = new GlideDateTime();
+    var diffMs = eventStart.getNumericValue() - now.getNumericValue();
+    var diffHours = diffMs / (1000 * 60 * 60);
+    if (diffHours < lateHours && diffHours >= 0) {
+        current.setValue('state', 'late_cancelled');
+        current.setValue('cancelled_on', now.getValue());
+        gs.addInfoMessage('This is a late cancellation (less than ' + lateHours + ' hours before the event). It will count toward your no-show limit.');
+    }
+    else {
+        current.setValue('cancelled_on', now.getValue());
+    }
+}
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/participation-validation.ts</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:44</sys_created_on>
+        <sys_id>c64f70f51efc4a0db8ed34234f15aebf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/participation-validation.ts</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_c64f70f51efc4a0db8ed34234f15aebf</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:44</sys_updated_on>
+    </sys_module>
+</record_update>

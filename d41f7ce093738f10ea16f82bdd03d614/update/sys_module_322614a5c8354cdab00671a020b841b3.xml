@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[import { gs, GlideRecord } from '@servicenow/glide';
+export function validateClosureChecklist(current, previous) {
+    var newStatus = current.getValue('status');
+    if (newStatus !== 'ready')
+        return;
+    var pending = [];
+    if (current.getValue('attendance_cleared') !== 'true' && current.getValue('attendance_cleared') !== true) {
+        pending.push('Attendance records not cleared');
+    }
+    if (current.getValue('expenses_cleared') !== 'true' && current.getValue('expenses_cleared') !== true) {
+        pending.push('Expense records not cleared');
+    }
+    if (current.getValue('impact_cleared') !== 'true' && current.getValue('impact_cleared') !== true) {
+        pending.push('Impact reports not cleared');
+    }
+    if (pending.length > 0) {
+        current.setValue('pending_items', pending.join('; '));
+        gs.addErrorMessage('Cannot mark as ready. Pending items: ' + pending.join(', '));
+        current.setAbortAction(true);
+    }
+}
+export function autoCheckClosureItems(current, previous) {
+    var eventId = current.getValue('event');
+    if (!eventId)
+        return;
+    // Check attendance: all should be completed, no_show, or corrected
+    var pendingAtt = new GlideRecord('x_2248447_csr_ma_2_attendance');
+    pendingAtt.addQuery('event', eventId);
+    pendingAtt.addQuery('status', 'NOT IN', 'completed,no_show,corrected');
+    pendingAtt.query();
+    current.setValue('attendance_cleared', !pendingAtt.hasNext());
+    // Check expenses: all should be reconciled or rejected
+    var pendingExp = new GlideRecord('x_2248447_csr_ma_2_expense');
+    pendingExp.addQuery('event', eventId);
+    pendingExp.addQuery('status', 'NOT IN', 'reconciled,rejected');
+    pendingExp.query();
+    current.setValue('expenses_cleared', !pendingExp.hasNext());
+    // Check impact: all should be verified or rejected
+    var pendingImp = new GlideRecord('x_2248447_csr_ma_2_impact');
+    pendingImp.addQuery('event', eventId);
+    pendingImp.addQuery('status', 'NOT IN', 'verified,rejected');
+    pendingImp.query();
+    current.setValue('impact_cleared', !pendingImp.hasNext());
+}
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/closure-validation.ts</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:37</sys_created_on>
+        <sys_id>322614a5c8354cdab00671a020b841b3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/closure-validation.ts</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_322614a5c8354cdab00671a020b841b3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:37</sys_updated_on>
+    </sys_module>
+</record_update>

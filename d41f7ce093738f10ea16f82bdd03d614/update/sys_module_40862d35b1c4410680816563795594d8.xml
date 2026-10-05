@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_module">
+    <sys_module action="INSERT_OR_UPDATE">
+        <content><![CDATA[import { gs, GlideRecord, GlideDateTime } from '@servicenow/glide';
+export function setImpactDueDate(current, previous) {
+    var eventId = current.getValue('event');
+    if (!eventId)
+        return;
+    var evt = new GlideRecord('x_2248447_csr_ma_2_event');
+    if (!evt.get(eventId))
+        return;
+    var eventDate = evt.getValue('event_date');
+    if (!eventDate)
+        return;
+    var dueDays = parseInt(gs.getProperty('x_2248447_csr_ma_2.impact_due_days')) || 15;
+    var dueDate = new GlideDateTime(eventDate);
+    dueDate.addDaysUTC(dueDays);
+    current.setValue('due_date', dueDate.getValue());
+    current.setValue('status', 'pending');
+}
+export function partnerScoreOnOverdue(current, previous) {
+    var newFlag = current.getValue('overdue_flag');
+    var oldFlag = previous.getValue('overdue_flag');
+    if (newFlag !== 'true' && newFlag !== true)
+        return;
+    if (oldFlag === 'true' || oldFlag === true)
+        return;
+    var partnerId = current.getValue('partner');
+    if (!partnerId)
+        return;
+    var partner = new GlideRecord('x_2248447_csr_ma_2_partner');
+    if (partner.get(partnerId)) {
+        var overdue = parseInt(partner.getValue('overdue_reports')) || 0;
+        overdue++;
+        partner.setValue('overdue_reports', overdue);
+        // Score recalculation happens via partner BR
+        partner.update();
+        gs.info('CSR: Partner ' + partner.getValue('name') + ' overdue reports incremented to ' + overdue);
+    }
+}
+export function validateVerifiedBeneficiaries(current, previous) {
+    var verified = parseInt(current.getValue('beneficiaries_verified')) || 0;
+    var reported = parseInt(current.getValue('beneficiaries_reported')) || 0;
+    if (verified > reported) {
+        current.setValue('beneficiaries_verified', reported);
+        gs.addInfoMessage('Verified beneficiaries capped at reported amount (' + reported + ').');
+    }
+}
+]]></content>
+        <external_source>false</external_source>
+        <path>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/impact-validation.ts</path>
+        <sys_class_name>sys_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-04 19:07:39</sys_created_on>
+        <sys_id>40862d35b1c4410680816563795594d8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_2248447_csr_ma_2/x-2248447-csr-management/1.0.0/src/server/business-rules/impact-validation.ts</sys_name>
+        <sys_package display_value="CSR Management" source="x_2248447_csr_ma_2">d41f7ce093738f10ea16f82bdd03d614</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CSR Management">d41f7ce093738f10ea16f82bdd03d614</sys_scope>
+        <sys_update_name>sys_module_40862d35b1c4410680816563795594d8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-04 19:07:39</sys_updated_on>
+    </sys_module>
+</record_update>

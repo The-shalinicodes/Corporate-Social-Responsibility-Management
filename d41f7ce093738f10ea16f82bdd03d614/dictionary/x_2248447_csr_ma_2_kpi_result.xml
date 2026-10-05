@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="30e515e893f38f10ea16f82bdd03d6e8" label="KPI Result" max_length="40" name="x_2248447_csr_ma_2_kpi_result" type="collection">
+        <element label="Plan" max_length="32" name="plan" reference="x_2248447_csr_ma_2_plan" reference_cascade_rule="cascade" type="reference"/>
+        <element attributes="scale=2" label="Actual value" max_length="20" name="actual_value" type="decimal"/>
+        <element choice="3" hint="Banded by the matching KPI Threshold record." label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Red" sequence="3" value="red"/>
+                <element inactive_on_update="false" label="Orange" sequence="2" value="orange"/>
+                <element inactive_on_update="false" label="Green" sequence="1" value="green"/>
+            </choice>
+        </element>
+        <element hint="For example 2025-04 or FY2025-Q1." label="Period" max_length="40" name="period" type="string"/>
+        <element attributes="scale=2" label="Target value" max_length="20" name="target_value" type="decimal"/>
+        <element label="Calculated on" max_length="40" name="calculated_on" type="glide_date_time"/>
+        <element choice="3" display="true" label="KPI" mandatory="true" max_length="40" name="kpi" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Beneficiaries Reached" sequence="4" value="beneficiaries"/>
+                <element inactive_on_update="false" label="Spend vs Budget" sequence="5" value="spend_vs_budget"/>
+                <element inactive_on_update="false" label="CSR Volunteer Hours" sequence="1" value="csr_hours"/>
+                <element inactive_on_update="false" label="Program Completion" sequence="6" value="program_completion"/>
+                <element inactive_on_update="false" label="NGO Engagement" sequence="3" value="ngo_engagement"/>
+                <element inactive_on_update="false" label="Employee Participation" sequence="2" value="employee_participation"/>
+            </choice>
+        </element>
+        <element attributes="scale=2" label="Achievement %" max_length="20" name="achievement_percent" type="decimal"/>
+        <index name="index">
+            <element name="plan"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="53269de893f38f10ea16f82bdd03d621" label="Attendance" max_length="40" name="x_2248447_csr_ma_2_attendance" type="collection">
+        <element hint="Must fall inside x_2248447_csr_ma_2.attendance_dispute_window_days of the event." label="Dispute raised on" max_length="40" name="dispute_raised_on" type="glide_date_time"/>
+        <element attributes="scale=2" hint="min(check_out - check_in, event scheduled hours)." label="Volunteer hours" max_length="20" name="volunteer_hours" type="decimal"/>
+        <element attributes="scale=2" hint="Hours actually credited to recognition and KPI totals." label="Credited hours" max_length="20" name="credited_hours" type="decimal"/>
+        <element display="true" label="Employee" mandatory="true" max_length="32" name="employee" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Corrected by" max_length="32" name="corrected_by" reference="sys_user" reference_cascade_rule="none" type="reference"/>
+        <element label="Event" mandatory="true" max_length="32" name="event" reference="x_2248447_csr_ma_2_event" reference_cascade_rule="cascade" type="reference"/>
+        <element label="Check out" max_length="40" name="check_out" type="glide_date_time"/>
+        <element choice="3" default="none" label="Dispute status" max_length="40" name="dispute_status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Resolved" sequence="4" value="resolved"/>
+                <element inactive_on_update="false" label="Raised" sequence="2" value="raised"/>
+                <element inactive_on_update="false" label="Under Review" sequence="3" value="under_review"/>
+                <element inactive_on_update="false" label="None" sequence="1" value="none"/>
+                <element inactive_on_update="false" label="Rejected" sequence="5" value="rejected"/>
+            </choice>
+        </element>
+        <element choice="3" default="pending" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Completed" sequence="3" value="completed"/>
+                <element inactive_on_update="false" label="Disputed" sequence="5" value="disputed"/>
+                <element inactive_on_update="false" label="Corrected" sequence="6" value="corrected"/>
+                <element inactive_on_update="false" label="Pending" sequence="1" value="pending"/>
+                <element inactive_on_update="false" label="Checked In" sequence="2" value="checked_in"/>
+                <element inactive_on_update="false" label="No Show" sequence="4" value="no_show"/>
+            </choice>
+        </element>
+        <element attributes="scale=2" hint="Hours as first calculated, retained for audit when a correction is applied." label="Original hours" max_length="20" name="original_hours" type="decimal"/>
+        <element label="Registration" max_length="32" name="registration" reference="x_2248447_csr_ma_2_event_reg" reference_cascade_rule="cascade" type="reference"/>
+        <element label="Correction reason" max_length="4000" name="correction_reason" type="multi_two_lines"/>
+        <element label="Check in" max_length="40" name="check_in" type="glide_date_time"/>
+        <element choice="3" label="Check in method" max_length="40" name="check_in_method" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="QR Code" sequence="1" value="qr"/>
+                <element inactive_on_update="false" label="Portal" sequence="3" value="portal"/>
+                <element inactive_on_update="false" label="Manual" sequence="2" value="manual"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="corrected_by"/>
+        </index>
+        <index name="index2">
+            <element name="employee"/>
+        </index>
+        <index name="index3">
+            <element name="event"/>
+        </index>
+        <index name="index4">
+            <element name="registration"/>
+        </index>
+    </element>
+</database>

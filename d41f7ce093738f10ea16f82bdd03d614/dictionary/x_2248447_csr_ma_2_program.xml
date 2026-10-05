@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="8886592c93f38f10ea16f82bdd03d68b" label="CSR Program" max_length="40" name="x_2248447_csr_ma_2_program" type="collection">
+        <element label="Category" max_length="32" name="category" reference="x_2248447_csr_ma_2_category" reference_cascade_rule="restrict" type="reference"/>
+        <element choice="3" default="draft" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Finance Approval" sequence="3" value="finance_approval"/>
+                <element inactive_on_update="false" label="Draft" sequence="1" value="draft"/>
+                <element inactive_on_update="false" label="Coordinator Validation" sequence="2" value="coordinator_validation"/>
+                <element inactive_on_update="false" label="Closed" sequence="10" value="closed"/>
+                <element inactive_on_update="false" label="Completed" sequence="7" value="completed"/>
+                <element inactive_on_update="false" label="CSR Head Approval" sequence="4" value="head_approval"/>
+                <element inactive_on_update="false" label="Returned" sequence="9" value="returned"/>
+                <element inactive_on_update="false" label="Rejected" sequence="8" value="rejected"/>
+                <element inactive_on_update="false" label="Approved" sequence="5" value="approved"/>
+                <element inactive_on_update="false" label="Active" sequence="6" value="active"/>
+            </choice>
+        </element>
+        <element label="Objectives" max_length="4000" name="objectives" type="multi_two_lines"/>
+        <element label="Start date" max_length="40" name="start_date" type="glide_date"/>
+        <element label="Resources required" max_length="4000" name="resources_required" type="multi_two_lines"/>
+        <element label="Expected outcomes" max_length="4000" name="expected_outcomes" type="multi_two_lines"/>
+        <element default="javascript:getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Partner" max_length="32" name="partner" reference="x_2248447_csr_ma_2_partner" reference_cascade_rule="restrict" type="reference"/>
+        <element label="Plan" max_length="32" name="plan" reference="x_2248447_csr_ma_2_plan" reference_cascade_rule="restrict" type="reference"/>
+        <element hint="Set when the proposed budget exceeds x_2248447_csr_ma_2.high_value_program_threshold." label="High value" max_length="40" name="high_value" type="boolean"/>
+        <element label="VTO required" max_length="40" name="vto_required" type="boolean"/>
+        <element label="End date" max_length="40" name="end_date" type="glide_date"/>
+        <element label="Target beneficiaries" max_length="40" name="target_beneficiaries" type="integer"/>
+        <element attributes="scale=2" label="Proposed budget" max_length="20" name="proposed_budget" type="decimal"/>
+        <element attributes="scale=2" hint="Committed against the category budget when the program is approved." label="Approved budget" max_length="20" name="approved_budget" type="decimal"/>
+        <element display="true" label="Title" mandatory="true" max_length="150" name="title" type="string"/>
+        <index name="index">
+            <element name="category"/>
+        </index>
+        <index name="index2">
+            <element name="partner"/>
+        </index>
+        <index name="index3">
+            <element name="plan"/>
+        </index>
+    </element>
+</database>
