@@ -1,3 +1,4 @@
+````markdown
 # Corporate Social Responsibility Management
 > A ServiceNow-based CSR management platform for managing NGO partnerships, employee volunteering, budgets, verified impact, KPIs, and AI-assisted decision support.
 
@@ -70,7 +71,6 @@ The platform connects:
 
 ### 7. KPI & Management Analytics
 Key CSR metrics include:
-
 - CSR Hours Achievement
 - Employee Participation
 - Beneficiary Achievement
@@ -83,8 +83,8 @@ Key CSR metrics include:
 - Impact Verification Rate
 
 ### 8. AI-Assisted Decision Support
-AI is used to support—not replace—business decisions.
 
+AI is used to support—not replace—business decisions.
 **AI capabilities:**
 - NGO partner risk screening
 - CSR budget allocation suggestions
@@ -97,6 +97,7 @@ Deterministic calculations, compliance controls, financial rules, and official K
 ---
 
 ## ServiceNow Architecture
+```text
 Users & Stakeholders
         │
         ▼
@@ -142,10 +143,12 @@ ServiceNow Workflow
         │
         ▼
 Continuous Improvement
+````
 
 ---
 
 ## AI Decision Model
+```text
 ServiceNow Records
         ↓
 Validation & Business Rules
@@ -163,6 +166,7 @@ Approved Action
 New Outcome Data
         ↓
 Re-measurement & Continuous Improvement
+```
 
 ---
 
@@ -206,7 +210,6 @@ Re-measurement & Continuous Improvement
 
 ## Business Rules
 Examples of important business controls:
-
 * Duplicate NGO detection
 * Compliance document validation
 * Partner suspension controls
@@ -224,10 +227,8 @@ An event cannot be fully closed until required attendance, expense, and impact i
 ---
 
 ## Key Innovation
-
 ### Verified Impact
 The platform does not treat every submitted impact value as an official KPI.
-
 **Submitted Impact → Verification → Trusted CSR KPI**
 
 ### AI + Human Governance
@@ -240,6 +241,7 @@ The system considers both:
 to prevent over-allocation.
 
 ### Closed-Loop CSR Management
+```text
 Plan
  ↓
 Execute
@@ -253,10 +255,12 @@ Analyze
 Improve
  ↓
 Plan Again
+```
 
 ---
 
 ## Project Structure
+```text
 Corporate-Social-Responsibility-Management/
 │
 ├── README.md
@@ -270,11 +274,11 @@ Corporate-Social-Responsibility-Management/
 │
 └── src/
     └── ServiceNow application files
+```
 
 ---
 
 ## Project Status
-
 ### Implemented / Prototyped
 * ServiceNow scoped application
 * CSR custom tables
@@ -297,7 +301,6 @@ Corporate-Social-Responsibility-Management/
 
 ## Project Impact
 The platform is designed to improve:
-
 * CSR operational efficiency
 * NGO onboarding speed
 * Budget visibility
@@ -324,11 +327,8 @@ Success can be evaluated using baseline vs. post-implementation measurements suc
 ---
 
 ## Hackathon
-
 **ServiceNow University HackNow India 2026**
-
 **Problem Statement:** Corporate Social Responsibility (CSR) Management
-
 **Team:** ServiceNow Mavericks
 **Institution:** Mohan Babu University
 
@@ -362,5 +362,6 @@ This repository contains the ServiceNow application source-control project and s
 
 ## Disclaimer
 This project is developed as a hackathon/prototype implementation for demonstrating a ServiceNow-based CSR management solution. Some advanced integrations and AI capabilities may require additional ServiceNow products, configurations, or enterprise system integrations.
+
 ```
 ```
